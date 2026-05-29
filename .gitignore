@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+# weights live on the HF Hub (LaelaZ/distilbert-emotion), not GitHub:
+# model.safetensors is 267MB, over GitHub's 100MB file limit. model.py falls
+# back to loading from the Hub when this dir is absent.
+model/
+~/.cache/
