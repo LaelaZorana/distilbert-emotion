@@ -34,6 +34,21 @@ Reproduce with `python -m emotion.evaluate`.
 I also surface the model's **confidently wrong** predictions, because a model that is wrong
 *loudly* is more dangerous than one that is wrong quietly. Those are the cases worth reading.
 
+## Where it actually fails
+
+I don't stop at a headline number. `python -m emotion.error_report` runs the shipped weights
+over the **full 2,000-example test set** and writes a confusion matrix, per-class
+precision/recall/F1, and the highest-confidence mistakes to
+[`reports/error_analysis.md`](reports/error_analysis.md).
+
+![Confusion matrix](assets/confusion_matrix.png)
+
+The single largest error axis is **joy ↔ love** (28 + 28 mutual misclassifications): both are
+short, affect-positive messages, so the model leans toward the higher-frequency neighbour. The
+rarest class, `surprise` (n=66, F1 0.72), leaks mainly into `fear` and `joy`. The errors are
+semantically adjacent rather than random — the model is losing the low-support classes, not
+misfiring broadly — which is the honest limitation to know before deploying it.
+
 ## Why this repo is more than "it trains"
 
 The shipped checkpoint is guarded by a **test** (`test_finetuned_clears_f1_bar`): it loads

@@ -80,6 +80,55 @@ weakness that accuracy hides.
 The repository also surfaces the model's **confidently wrong** predictions (the loudest
 mistakes), which is where the model's real limits show.
 
+## Error analysis
+
+A real confusion matrix and per-class breakdown on the **full held-out test set (2,000
+examples)**, regenerated from the shipped weights with `python -m emotion.error_report`.
+
+![Confusion matrix](assets/confusion_matrix.png)
+
+<details><summary>Confusion matrix as counts (rows = true, cols = predicted)</summary>
+
+| true ↓ / pred → | sadness | joy | love | anger | fear | surprise | recall |
+|---|---|---|---|---|---|---|---|
+| sadness | 558 | 10 | 2 | 4 | 7 | 0 | 0.96 |
+| joy | 6 | 656 | 28 | 3 | 1 | 1 | 0.94 |
+| love | 0 | 28 | 128 | 3 | 0 | 0 | 0.81 |
+| anger | 13 | 4 | 0 | 246 | 12 | 0 | 0.89 |
+| fear | 3 | 0 | 0 | 2 | 208 | 11 | 0.93 |
+| surprise | 3 | 7 | 0 | 0 | 12 | 44 | 0.67 |
+
+</details>
+
+**Per-class precision / recall / F1**
+
+| class | precision | recall | F1 | support |
+|---|---|---|---|---|
+| sadness | 0.957 | 0.960 | 0.959 | 581 |
+| joy | 0.930 | 0.944 | 0.937 | 695 |
+| love | 0.810 | 0.805 | 0.808 | 159 |
+| anger | 0.953 | 0.895 | 0.923 | 275 |
+| fear | 0.867 | 0.929 | 0.897 | 224 |
+| surprise | 0.786 | 0.667 | 0.721 | 66 |
+
+**Where it fails.** The single largest error axis is **joy ↔ love** (28 + 28 mutual
+misclassifications): both are short, affect-positive messages, so the model leans toward the
+higher-frequency neighbour. The rarest class, `surprise` (n=66), leaks mainly into `fear` (12)
+and `joy` (7). The mistakes are semantically adjacent rather than random — the model learned the
+manifold and is mostly losing the low-support classes, not misfiring broadly.
+
+**Confidently wrong (highest-confidence mistakes)** — the cases the model got wrong *and* was
+sure about, the slice worth reading:
+
+| true | predicted | conf | text |
+|---|---|---|---|
+| joy | sadness | 0.99 | i feel very saddened that the king whom i once quite respected as far as monarchs go was i… |
+| love | joy | 0.99 | i feel affirmed gracious sensuous and will have less self doubt when a href http generatio… |
+| sadness | joy | 0.99 | i first started reading city of dark magic i thought it would be a challenge to actually e… |
+| anger | sadness | 0.98 | i actually was in a meeting last week where someone yelled at an older lady because her ph… |
+| sadness | joy | 0.98 | i felt a stronger wish to be free from self cherishing through my refuge practice and a re… |
+| anger | sadness | 0.98 | i really dont like quinn because i feel like she will just end up hurting barney and i hat… |
+
 ## Training
 
 - Base model: `distilbert-base-uncased`

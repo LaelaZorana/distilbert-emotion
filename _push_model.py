@@ -33,3 +33,14 @@ api.upload_file(
     commit_message="Add model card",
 )
 print(f"model card set -> https://huggingface.co/{REPO_ID}")
+
+# Error-analysis artifacts so the card's confusion matrix renders on the Hub.
+for rel in ("assets/confusion_matrix.png", "reports/error_analysis.md"):
+    src = HERE / rel
+    if src.exists():
+        api.upload_file(
+            path_or_fileobj=str(src), path_in_repo=rel,
+            repo_id=REPO_ID, repo_type="model",
+            commit_message="Add confusion matrix + error analysis",
+        )
+        print("uploaded", rel)
