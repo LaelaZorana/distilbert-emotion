@@ -96,7 +96,7 @@ def _save_png(cm: np.ndarray) -> bool:
     ax.set_xticks(range(len(LABELS))); ax.set_yticks(range(len(LABELS)))
     ax.set_xticklabels(LABELS, rotation=45, ha="right"); ax.set_yticklabels(LABELS)
     ax.set_xlabel("predicted"); ax.set_ylabel("true")
-    ax.set_title("Emotion classifier — confusion matrix (row-normalised)")
+    ax.set_title("Emotion classifier: confusion matrix (row-normalised)")
     for i in range(len(LABELS)):
         for j in range(len(LABELS)):
             ax.text(j, i, str(cm[i, j]), ha="center", va="center",
@@ -144,7 +144,7 @@ def write_markdown(res: Dict, png: bool) -> Path:
     lines.append("## Error analysis (held-out test set)")
     lines.append("")
     lines.append(f"Real evaluation of the fine-tuned weights on the **`test` split of "
-                 f"dair-ai/emotion — {res['n']:,} examples the model never saw in training**. "
+                 f"dair-ai/emotion, {res['n']:,} examples the model never saw in training**. "
                  f"Fully reproducible: `python -m emotion.error_report`.")
     lines.append("")
     lines.append("| metric | score |")
@@ -178,12 +178,12 @@ def write_markdown(res: Dict, png: bool) -> Path:
     lines.append(f"The dominant confusions are {conf_phrases}. The single largest error axis is "
                  f"**{a0} ↔ {b0}** ({n_ab} + {n_ba} mutual misclassifications): both are short, "
                  f"affect-positive messages, so the model leans toward the higher-frequency neighbour. "
-                 f"The weakest classes are {weak_phrases} — the two **rarest** in the data — which is "
+                 f"The weakest classes are {weak_phrases}, the two **rarest** in the data, which is "
                  f"exactly why macro F1 ({res['macro_f1']:.3f}) sits below accuracy "
                  f"({res['accuracy']:.3f}): macro F1 weights every class equally and so exposes the "
                  f"rare-class weakness that accuracy hides. The rarest class, `{rarest}` "
                  f"(n={pc[rarest]['support']}), leaks mainly into {leak_str}. The mistakes are "
-                 f"semantically adjacent rather than random — the model learned the manifold and is "
+                 f"semantically adjacent rather than random. The model learned the manifold and is "
                  f"mostly losing the low-support classes, not misfiring broadly.")
     lines.append("")
     lines.append("### Confidently wrong (highest-confidence mistakes)")

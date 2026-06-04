@@ -1,6 +1,6 @@
 ## Error analysis (held-out test set)
 
-Real evaluation of the fine-tuned weights on the **`test` split of dair-ai/emotion — 2,000 examples the model never saw in training**. Fully reproducible: `python -m emotion.error_report`.
+Real evaluation of the fine-tuned weights on the **`test` split of dair-ai/emotion, 2,000 examples the model never saw in training**. Fully reproducible: `python -m emotion.error_report`.
 
 | metric | score |
 |---|---|
@@ -38,7 +38,7 @@ Real evaluation of the fine-tuned weights on the **`test` split of dair-ai/emoti
 
 ### Where it fails
 
-The dominant confusions are **joy → love** (28), **love → joy** (28), **anger → sadness** (13). The single largest error axis is **joy ↔ love** (28 + 28 mutual misclassifications): both are short, affect-positive messages, so the model leans toward the higher-frequency neighbour. The weakest classes are **surprise** (F1 0.72, n=66), **love** (F1 0.81, n=159) — the two **rarest** in the data — which is exactly why macro F1 (0.874) sits below accuracy (0.920): macro F1 weights every class equally and so exposes the rare-class weakness that accuracy hides. The rarest class, `surprise` (n=66), leaks mainly into `fear` (12) and `joy` (7). The mistakes are semantically adjacent rather than random — the model learned the manifold and is mostly losing the low-support classes, not misfiring broadly.
+The dominant confusions are **joy → love** (28), **love → joy** (28), **anger → sadness** (13). The single largest error axis is **joy ↔ love** (28 + 28 mutual misclassifications): both are short, affect-positive messages, so the model leans toward the higher-frequency neighbour. The weakest classes are **surprise** (F1 0.72, n=66), **love** (F1 0.81, n=159), the two **rarest** in the data, which is exactly why macro F1 (0.874) sits below accuracy (0.920): macro F1 weights every class equally and so exposes the rare-class weakness that accuracy hides. The rarest class, `surprise` (n=66), leaks mainly into `fear` (12) and `joy` (7). The mistakes are semantically adjacent rather than random. The model learned the manifold and is mostly losing the low-support classes, not misfiring broadly.
 
 ### Confidently wrong (highest-confidence mistakes)
 
