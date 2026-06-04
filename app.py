@@ -107,6 +107,25 @@ CSS = """
   --ez-card:#ffffff; --ez-line:rgba(20,16,40,.08);
   --ez-font:'Plus Jakarta Sans','Inter',system-ui,sans-serif;
 }
+
+/* Light lock: HF Spaces default to dark mode, but this UI is designed light.
+   Override Gradio's dark theme variables so it renders light everywhere. */
+:root, .dark, gradio-app.dark {
+  color-scheme: light !important;
+  --body-background-fill:#ffffff !important;
+  --background-fill-primary:#ffffff !important;
+  --background-fill-secondary:#f6f6fb !important;
+  --block-background-fill:#ffffff !important;
+  --block-label-background-fill:#ffffff !important;
+  --input-background-fill:#ffffff !important;
+  --border-color-primary:rgba(20,16,40,.12) !important;
+  --body-text-color:#16131f !important;
+  --body-text-color-subdued:#6b6880 !important;
+  --block-title-text-color:#16131f !important;
+  --block-info-text-color:#6b6880 !important;
+}
+html, body, gradio-app, .dark { background:#ffffff !important; }
+
 .gradio-container { max-width: 760px !important; background:
   radial-gradient(1200px 500px at 15% -10%, var(--ez-bg1), transparent 60%),
   radial-gradient(1000px 500px at 110% 10%, var(--ez-bg2), transparent 55%) !important; }
