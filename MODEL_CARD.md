@@ -83,7 +83,7 @@ mistakes), which is where the model's real limits show.
 ## Error analysis
 
 A real confusion matrix and per-class breakdown on the **full held-out test set (2,000
-examples)**, regenerated from the shipped weights with `python -m emotion.error_report`.
+examples)**, regenerated from the trained weights with `python -m emotion.error_report`.
 
 ![Confusion matrix](assets/confusion_matrix.png)
 
@@ -114,10 +114,10 @@ examples)**, regenerated from the shipped weights with `python -m emotion.error_
 **Where it fails.** The single largest error axis is **joy ↔ love** (28 + 28 mutual
 misclassifications): both are short, affect-positive messages, so the model leans toward the
 higher-frequency neighbour. The rarest class, `surprise` (n=66), leaks mainly into `fear` (12)
-and `joy` (7). The mistakes are semantically adjacent rather than random — the model learned the
+and `joy` (7). The mistakes are semantically adjacent rather than random. The model learned the
 manifold and is mostly losing the low-support classes, not misfiring broadly.
 
-**Confidently wrong (highest-confidence mistakes)** — the cases the model got wrong *and* was
+**Confidently wrong (highest-confidence mistakes):** the cases the model got wrong *and* was
 sure about, the slice worth reading:
 
 | true | predicted | conf | text |
