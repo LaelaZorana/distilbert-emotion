@@ -36,7 +36,7 @@ I also surface the model's **confidently wrong** predictions, because a model th
 
 ## Where it actually fails
 
-I don't stop at a headline number. `python -m emotion.error_report` runs the shipped weights
+I don't stop at a headline number. `python -m emotion.error_report` runs the released weights
 over the **full 2,000-example test set** and writes a confusion matrix, per-class
 precision/recall/F1, and the highest-confidence mistakes to
 [`reports/error_analysis.md`](reports/error_analysis.md).
