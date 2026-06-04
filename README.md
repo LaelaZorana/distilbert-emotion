@@ -1,11 +1,11 @@
 # distilbert-emotion
 
-**🔗 Live demo:** [try it on Hugging Face Spaces](https://huggingface.co/spaces/LaelaZ/distilbert-emotion) — type a sentence, watch the model name the emotion.
-**🤗 Model on the Hub:** [LaelaZ/distilbert-emotion](https://huggingface.co/LaelaZ/distilbert-emotion) — with a model card, ready to `pipeline("text-classification", ...)`.
+**🔗 Live demo:** [try it on Hugging Face Spaces](https://huggingface.co/spaces/LaelaZ/distilbert-emotion). Type a sentence, watch the model name the emotion.
+**🤗 Model on the Hub:** [LaelaZ/distilbert-emotion](https://huggingface.co/LaelaZ/distilbert-emotion), with a model card, ready to `pipeline("text-classification", ...)`.
 
 I fine-tuned **DistilBERT** to read a sentence and name the feeling behind it: one of six
 emotions (sadness, joy, love, anger, fear, surprise). This is the NLP / transformers piece
-of my portfolio, and it follows the same discipline as the rest: I do not just ship the
+of my portfolio, and it follows the same discipline as the rest. I don't just train the
 model, I **report how well it actually works on held-out data and where it fails**.
 
 ## I built it and I verified it
@@ -46,12 +46,12 @@ precision/recall/F1, and the highest-confidence mistakes to
 The single largest error axis is **joy ↔ love** (28 + 28 mutual misclassifications): both are
 short, affect-positive messages, so the model leans toward the higher-frequency neighbour. The
 rarest class, `surprise` (n=66, F1 0.72), leaks mainly into `fear` and `joy`. The errors are
-semantically adjacent rather than random — the model is losing the low-support classes, not
-misfiring broadly — which is the honest limitation to know before deploying it.
+semantically adjacent rather than random: the model is losing the low-support classes, not
+misfiring broadly. That's the honest limitation to know before deploying it.
 
 ## Why this repo is more than "it trains"
 
-The shipped checkpoint is guarded by a **test** (`test_finetuned_clears_f1_bar`): it loads
+The released checkpoint is guarded by a **test** (`test_finetuned_clears_f1_bar`): it loads
 the real model, evaluates a slice of the test set, and fails CI if accuracy or macro F1 drop
 below a bar. So a regressed or corrupted model breaks the build, not the live demo. The fast
 tests verify the data contract and the prediction post-processing with a stub model, so they
