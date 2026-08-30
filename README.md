@@ -15,11 +15,10 @@ trained on) and report accuracy alongside **macro and weighted F1**. Macro F1 ma
 because the emotion classes are imbalanced (joy and sadness dominate, surprise is rare), so
 accuracy alone would hide weakness on the rare classes.
 
-<!-- METRICS:START -->
 **Held-out test set (2,000 examples):**
 
 | metric | score |
-|---|---|
+|-|-|
 | accuracy | **0.920** |
 | macro F1 | **0.874** |
 | weighted F1 | **0.920** |
@@ -29,10 +28,9 @@ The two weakest classes are the two rarest (love n=159, surprise n=66), which is
 why macro F1 (0.874) sits below accuracy (0.920): accuracy is carried by the easy, frequent
 classes, while macro F1 weights every class equally and exposes the rare-class weakness.
 Reproduce with `python -m emotion.evaluate`.
-<!-- METRICS:END -->
 
 I also surface the model's **confidently wrong** predictions, because a model that is wrong
-*loudly* is more dangerous than one that is wrong quietly. Those are the cases worth reading.
+*loudly* is more dangerous than a low-confidence miss. Those are the cases worth reading.
 
 ## Where it actually fails
 
@@ -63,7 +61,7 @@ tests/test_emotion.py
   test_predict_returns_probability_distribution  # softmax sums to 1, labels complete
   test_predict_one_picks_argmax_label      # top label == argmax
   test_predict_accepts_single_string       # str and list inputs both work
-  test_finetuned_clears_f1_bar             # shipped model holds accuracy/F1 (skips if absent)
+  test_finetuned_clears_f1_bar             # shipped model holds accuracy/F1 (always runs in CI)
 ```
 
 ## Use the model

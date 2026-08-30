@@ -85,8 +85,16 @@ def test_predict_accepts_single_string():
 # --- Heavy layer: real fine-tuned model, skipped if not present. ---
 
 def test_finetuned_clears_f1_bar():
-    """Prove the shipped model works: macro F1 on held-out test must clear a bar."""
-    if not (model_mod.LOCAL_MODEL_DIR / "config.json").exists():
+    """Prove the shipped model works: macro F1 on held-out test must clear a bar.
+
+    In CI (the CI env var is set) this always runs: the loader falls back to the public
+    Hub checkpoint when the local model dir is absent, so a regressed or corrupted
+    release fails the build. Locally it skips when the local model is absent, so plain
+    `pytest` stays fast and offline.
+    """
+    import os
+
+    if not (model_mod.LOCAL_MODEL_DIR / "config.json").exists() and not os.environ.get("CI"):
         pytest.skip("fine-tuned model not present (run python -m emotion.train)")
     pytest.importorskip("sklearn")
     pytest.importorskip("datasets")
